@@ -18,8 +18,11 @@ public class Drivetrain {
       private static float speed;
       private static final float DEFAULT_SPEED = 0.65f;
       private static final float SLOW_SPEED = 0.4f;
+      private static final float SPRINT_SPEED = 0.9f;
 
-        private static boolean toggleSlowSpeed = true;
+      private static final double RAMP_RATE = 0.5;
+
+      private static boolean toggleSlowSpeed = true;
 
 //   static SlewRateLimiter filter = new SlewRateLimiter(0.5);
 //   static SlewRateLimiter filter2 = new SlewRateLimiter(0.5);
@@ -30,6 +33,11 @@ public Drivetrain() {
   frontLeftDrive = new CANSparkMax(4, MotorType.kBrushless);
   backRightDrive = new CANSparkMax(1, MotorType.kBrushless);
   backLeftDrive = new CANSparkMax(2, MotorType.kBrushless);
+
+  frontRightDrive.setOpenLoopRampRate(RAMP_RATE);
+  frontLeftDrive.setOpenLoopRampRate(RAMP_RATE);
+  backRightDrive.setOpenLoopRampRate(RAMP_RATE);
+  backLeftDrive.setOpenLoopRampRate(RAMP_RATE);
 
   frontRightDrive.setInverted(false);
   frontLeftDrive.setInverted(false);
@@ -72,6 +80,19 @@ public static void driveArcade(float pRotation, float pSpeed) {
       }
     }
   }
+
+    //We want a function that when we hold a button, changes speed to max (or high speed value)
+    public static void sprintMode(Boolean sprint){
+      if(sprint){
+        speed = SPRINT_SPEED;
+        System.out.println("Sprint lol");
+      }
+      else{
+        speed = DEFAULT_SPEED;
+        System.out.println("nah bruh");
+      }
+      
+    }
 
 
 

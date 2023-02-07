@@ -81,17 +81,18 @@ public class IO {
                 break;
             case Y_BUTTON:
                 break;
-            case LB_BUTTON:
-                break;
             case RB_BUTTON:
+                break;
+            case LB_BUTTON:
+                Drivetrain.sprintMode(true);
                 break;
             case BACK_BUTTON:
                 // changeLayoutBackwards();
                 break;
             case START_BUTTON:
-                // changeLayoutForwards();
                 break;
             default:
+                Drivetrain.sprintMode(false);
             break;
         }
     }
