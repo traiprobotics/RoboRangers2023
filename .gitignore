@@ -1,0 +1,4 @@
+.vscode/
+.wpilib/
+*.bin
+*.lock
