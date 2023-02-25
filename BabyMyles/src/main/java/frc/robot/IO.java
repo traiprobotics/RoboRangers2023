@@ -74,12 +74,16 @@ public class IO {
     public static void driveButtonsPressed() {              //DRIVE CONTROLLER
         switch (buttonPressed(IO.driveJoystick)) {
             case A_BUTTON:
+                Manipulator.intakeDown();
                 break;
             case B_BUTTON:
+                Manipulator.intakeUp();
                 break;
-            case X_BUTTON:  
+            case X_BUTTON:
+                Manipulator.armDown();  
                 break;
             case Y_BUTTON:
+                Manipulator.armUp();
                 break;
             case RB_BUTTON:
                 break;
@@ -93,6 +97,8 @@ public class IO {
                 break;
             default:
                 Drivetrain.sprintMode(false);
+                Manipulator.intakeStop();
+                // Manipulator.armStop();
             break;
         }
     }

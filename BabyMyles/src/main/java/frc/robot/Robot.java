@@ -93,7 +93,9 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Drivetrain.tankDriveWithJoystick();
     IO.driveButtonsPressed();
-    manipulator.armPot();
+    // manipulator.armPot();
+    //manipulator.intakePot();
+    manipulator.driveArmToPosition();
 
   }
 
