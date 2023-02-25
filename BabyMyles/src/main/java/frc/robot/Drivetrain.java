@@ -85,11 +85,11 @@ public static void driveArcade(float pRotation, float pSpeed) {
     public static void sprintMode(Boolean sprint){
       if(sprint){
         speed = SPRINT_SPEED;
-        System.out.println("Sprint lol");
+       // System.out.println("Sprint lol");
       }
       else{
         speed = DEFAULT_SPEED;
-        System.out.println("nah bruh");
+      //  System.out.println("nah bruh");
       }
       
     }

@@ -27,6 +27,7 @@ public class Robot extends TimedRobot {
 
    public static IO io = new IO();
    public static Drivetrain driveTrain = new Drivetrain();
+   public static Manipulator manipulator = new Manipulator();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -92,6 +93,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Drivetrain.tankDriveWithJoystick();
     IO.driveButtonsPressed();
+    manipulator.armPot();
 
   }
 
