@@ -93,10 +93,14 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Drivetrain.tankDriveWithJoystick();
     IO.driveButtonsPressed();
+    IO.controlButtonsPressed();
     // manipulator.armPot();
-    //manipulator.intakePot();
+    manipulator.intakePot();
     manipulator.driveArmToPosition();
-
+    //manipulator.driveIntakeToPosition();
+    //manipulator.gripperHold();
+    manipulator.driveIntakePitchStick();
+    manipulator.driveArmPitchStick();
   }
 
   /** This function is called once when the robot is disabled. */

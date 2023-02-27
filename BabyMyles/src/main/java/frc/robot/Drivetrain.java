@@ -16,9 +16,9 @@ public class Drivetrain {
       private static CANSparkMax backLeftDrive;
 
       private static float speed;
-      private static final float DEFAULT_SPEED = 0.65f;
+      private static final float DEFAULT_SPEED = 0.45f;
       private static final float SLOW_SPEED = 0.4f;
-      private static final float SPRINT_SPEED = 0.9f;
+      private static final float SPRINT_SPEED = 0.6f;
 
       private static final double RAMP_RATE = 0.5;
 

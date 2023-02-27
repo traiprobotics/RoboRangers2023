@@ -5,7 +5,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.AnalogInput;;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;;
 
 public class Manipulator {
 
@@ -14,7 +15,11 @@ public class Manipulator {
     private static CANSparkMax gripper;
     private static AnalogInput armPot;
     private static AnalogInput intakePot;
+    private static DigitalInput gripperPot;
     private static float desiredArmPosition = 100;
+    private static float desiredIntakePosition = 2000;
+
+    
 
     public Manipulator(){
 
@@ -26,24 +31,59 @@ public class Manipulator {
             // fully down = 
         gripper = new CANSparkMax(7, MotorType.kBrushed);
         armPot = new AnalogInput(0);
-        intakePot = new AnalogInput(1);
+        intakePot = new AnalogInput(2);
+        gripperPot = new DigitalInput(0);
 
         armPitch.setInverted(false);
         intakePitch.setInverted(false);
         gripper.setInverted(false);
 
         desiredArmPosition = 100;
+        desiredIntakePosition = 2000;
     }
 
     public static void driveArmToPosition(){
         float deltaPosition = desiredArmPosition-armPot.getValue();
-        float armSpeed = (float) MathUtil.clamp(deltaPosition, -0.2, 0.2);
+        float armSpeed = (float) MathUtil.clamp(deltaPosition/1700, -0.35, 0.35);
+        //System.out.println(armSpeed);
         armPitch.set(armSpeed);
+    }
+
+    public static void driveIntakeToPosition(){
+        float deltaPosition = desiredIntakePosition-intakePot.getValue();
+        float intakeSpeed = (float) MathUtil.clamp(deltaPosition/1700, -0.35, 0.35);
+        //System.out.println(armSpeed);
+        intakePitch.set(intakeSpeed);
+    }
+
+    public static void gripperOpen(){
+        gripper.set(-0.3f);
+    }
+
+    public static void gripperClose(){
+        gripper.set(0.3f);
+ /*       if (gripperPot.get()){
+       
+      } else {
+      gripper.set(0.3f);
+       }
+ */     
+    }
+
+    public static void gripperStop(){
+        gripper.stopMotor();
+    }
+
+    public static void gripperHold(){
+        gripper.set(0.05);
+    }
+
+    public static void gripperTest(){
+        gripper.set(1);
     }
 
     public static void armPot(){
         System.out.println(armPot.getValue());
-
     }
 
     public static void intakePot(){
@@ -63,7 +103,15 @@ public class Manipulator {
     }
 
     public static void armUp(){
-        desiredArmPosition = 1570;
+        desiredArmPosition = 1700;
+    }
+
+    public static void armMid(){
+        desiredArmPosition = 1200;
+    }
+
+    public static void armGround(){
+        desiredArmPosition = 500;
     }
 
     public static void armDown(){
@@ -74,6 +122,22 @@ public class Manipulator {
         armPitch.stopMotor();
     }
 
+    //test space
+    public static void driveIntakePitchStick(){
+        float intakePitchSpeed = (float) (IO.controlJoystick.getRawAxis(IO.LY_STICK_AXIS));
+        if(intakePitchSpeed < 0.05f && intakePitchSpeed > -0.05f){
+            intakePitch.stopMotor();
+        } else {
+        intakePitch.set(intakePitchSpeed * 0.25);
+        }
+    }
 
-
+    public static void driveArmPitchStick(){
+        float armPitchChange = (float) (IO.controlJoystick.getRawAxis(IO.RY_STICK_AXIS));
+        if(armPitchChange < 0.05f && armPitchChange > -0.05f){
+            
+        } else {
+        desiredArmPosition += -25*armPitchChange;
+        }
+    }
 }

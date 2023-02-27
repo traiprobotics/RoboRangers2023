@@ -17,25 +17,25 @@ public class IO {
 
     public static final int PAD = 16;
 
-    public static final int A_BUTTON = 1;
-    public static final int B_BUTTON = 2;
-    public static final int X_BUTTON = 3;
+    public static final int A_BUTTON = 2;
+    public static final int B_BUTTON = 3;
+    public static final int X_BUTTON = 1;
     public static final int Y_BUTTON = 4;
     public static final int LB_BUTTON = 5;
     public static final int RB_BUTTON = 6;
-    public static final int BACK_BUTTON = 7;
+    public static final int BACK_BUTTON = 9;
     public static final int START_BUTTON = 8;
-    public static final int L_STICK_BUTTON = 9;
+    public static final int L_STICK_BUTTON = 7;
     public static final int R_STICK_BUTTON = 10;
     public static final int L_TRIGGER_BUTTON = 11;
     public static final int R_TRIGGER_BUTTON = 12;
 
     public static Joystick driveJoystick;
-    public static Joystick shootJoystick;
+    public static Joystick controlJoystick;
 
     public IO() {
         driveJoystick = new Joystick(DRIVE_JOYSTICK_PORT);
-        shootJoystick = new Joystick(CONTROL_JOYSTICK_PORT);
+        controlJoystick = new Joystick(CONTROL_JOYSTICK_PORT);
     }
 
     public static int buttonPressed(Joystick pJoystick) {
@@ -74,16 +74,12 @@ public class IO {
     public static void driveButtonsPressed() {              //DRIVE CONTROLLER
         switch (buttonPressed(IO.driveJoystick)) {
             case A_BUTTON:
-                Manipulator.intakeDown();
                 break;
             case B_BUTTON:
-                Manipulator.intakeUp();
                 break;
             case X_BUTTON:
-                Manipulator.armDown();  
                 break;
             case Y_BUTTON:
-                Manipulator.armUp();
                 break;
             case RB_BUTTON:
                 break;
@@ -97,8 +93,40 @@ public class IO {
                 break;
             default:
                 Drivetrain.sprintMode(false);
-                Manipulator.intakeStop();
                 // Manipulator.armStop();
+            break;
+        }
+    }
+
+    public static void controlButtonsPressed() {              //DRIVE CONTROLLER
+        switch (buttonPressed(IO.controlJoystick)) {
+            case A_BUTTON:
+                Manipulator.armDown();
+                break;
+            case B_BUTTON:
+                Manipulator.armGround();
+                break;
+            case X_BUTTON:
+                Manipulator.armMid();  
+                break;
+            case Y_BUTTON:
+                Manipulator.armUp();
+                break;
+            case RB_BUTTON:
+                Manipulator.gripperOpen();
+                break;
+            case LB_BUTTON:
+                Manipulator.gripperClose();
+                break;
+            case START_BUTTON:
+                break;
+            case BACK_BUTTON:
+                Manipulator.gripperTest();
+                break;
+            default:
+                //Manipulator.intakeStop();
+                // Manipulator.armStop();
+                Manipulator.gripperStop();
             break;
         }
     }
