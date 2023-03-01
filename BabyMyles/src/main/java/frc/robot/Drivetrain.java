@@ -16,11 +16,11 @@ public class Drivetrain {
       private static CANSparkMax backLeftDrive;
 
       private static float speed;
-      private static final float DEFAULT_SPEED = 0.45f;
-      private static final float SLOW_SPEED = 0.4f;
-      private static final float SPRINT_SPEED = 0.6f;
+      private static final float DEFAULT_SPEED = 0.6f;
+      private static final float SLOW_SPEED = 0.3f;
+      private static final float SPRINT_SPEED = 0.9f;
 
-      private static final double RAMP_RATE = 0.5;
+      private static final double RAMP_RATE = 0.3;
 
       private static boolean toggleSlowSpeed = true;
 
@@ -53,7 +53,7 @@ public Drivetrain() {
 
 }
 
-public static void driveArcade(float pRotation, float pSpeed) {
+public static void driveArcade(float pSpeed, float pRotation) {
     driveTrain.arcadeDrive(pSpeed, pRotation);
   }
   
@@ -65,7 +65,6 @@ public static void driveArcade(float pRotation, float pSpeed) {
   public static void tankDriveWithJoystick() {
       float right = (float) (IO.driveJoystick.getRawAxis(IO.RY_STICK_AXIS)* speed);
       float left = (float) (IO.driveJoystick.getRawAxis(IO.LY_STICK_AXIS)* -speed);
-  
       driveTank(left, right);
   }
 
@@ -85,13 +84,20 @@ public static void driveArcade(float pRotation, float pSpeed) {
     public static void sprintMode(Boolean sprint){
       if(sprint){
         speed = SPRINT_SPEED;
-      //  System.out.println("Sprint lol");
       }
       else{
         speed = DEFAULT_SPEED;
-      //  System.out.println("nah bruh");
       }
-      
+    }
+
+    public static void setSlowSpeed() {
+      speed = SLOW_SPEED;
+    }
+
+    public static void driveArcadeWithJoystick() {
+      float forward = (float) (IO.driveJoystick.getRawAxis(IO.LY_STICK_AXIS)* speed);
+      float turn = (float) (IO.driveJoystick.getRawAxis(IO.RX_STICK_AXIS)* speed);
+      driveArcade(turn, forward);
     }
 
 

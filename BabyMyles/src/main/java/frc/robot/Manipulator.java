@@ -1,5 +1,4 @@
 package frc.robot;
-import javax.print.CancelablePrintJob;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -15,129 +14,141 @@ public class Manipulator {
     private static CANSparkMax gripper;
     private static AnalogInput armPot;
     private static AnalogInput intakePot;
-    private static DigitalInput gripperPot;
+    private static DigitalInput gripperSwitch;
     private static float desiredArmPosition = 100;
-    private static float desiredIntakePosition = 2000;
+    private static float desiredIntakePosition = 3000;
+    private static float currentArmPosition = 100;
 
-    
+    //Range settings for the arm pitch
+    private static final float ARM_MAX_UP = 2000;
+    public static final float ARM_HIGH = 1700;
+    public static final float ARM_MIDDLE = 1200;
+    public static final float ARM_GROUND = 500;
+    public static final float ARM_HOME = 100;
+    private static final float ARM_MAX_DOWN = 90;
+
+    //Range settings for the manipulator pitch
+    private static final float INTAKE_MAX_UP = 4000;
+    public static final float INTAKE_HIGH = 2100;
+    public static final float INTAKE_MIDDLE = 620;
+    public static final float INTAKE_GROUND = 1200;
+    public static final float INTAKE_HOME = 3500;
+    private static final float INTAKE_MAX_DOWN = 250;
+    private static final float INTAKE_SAFE_DEPLOY = 400;
+    private static final float mapRate = 0;
 
     public Manipulator(){
 
+        //SPARK MAXs
         armPitch = new CANSparkMax(5, MotorType.kBrushless);
-            // fully up = 1570
-            // fully down = 100
         intakePitch = new CANSparkMax(6, MotorType.kBrushless);
-            // fully up = 4049 (not hitting arm when arm is fully down)
-            // fully down = 
         gripper = new CANSparkMax(7, MotorType.kBrushed);
+
+        //Sensors
         armPot = new AnalogInput(0);
         intakePot = new AnalogInput(2);
-        gripperPot = new DigitalInput(0);
+        gripperSwitch = new DigitalInput(0);
 
+        //Are there any inverted?
         armPitch.setInverted(false);
         intakePitch.setInverted(false);
         gripper.setInverted(false);
-
+        
+        //working variables
         desiredArmPosition = 100;
         desiredIntakePosition = 2000;
+        currentArmPosition = armPot.getValue();
     }
 
-    public static void driveArmToPosition(){
-        float deltaPosition = desiredArmPosition-armPot.getValue();
-        float armSpeed = (float) MathUtil.clamp(deltaPosition/1700, -0.35, 0.35);
-        //System.out.println(armSpeed);
+    public static void controlManipulator(){
+        driveArmToPosition();
+        driveArmPitchStick();
+        driveIntakeToPosition();
+        driveIntakePitchStick();
+    }
+
+    private static void driveArmToPosition(){
+        float currentArmPosition = armPot.getValue();
+        float deltaPosition = desiredArmPosition-currentArmPosition;
+        float armSpeed = (float) MathUtil.clamp(deltaPosition/2000, -0.3, 0.3);
         armPitch.set(armSpeed);
+
+        if(currentArmPosition >= ARM_GROUND){
+            Drivetrain.setSlowSpeed();
+        }
     }
 
-    public static void driveIntakeToPosition(){
-        float deltaPosition = desiredIntakePosition-intakePot.getValue();
-        float intakeSpeed = (float) MathUtil.clamp(deltaPosition/1700, -0.35, 0.35);
-        //System.out.println(armSpeed);
-        intakePitch.set(intakeSpeed);
+    private static void driveIntakeToPosition(){
+        float safeIntakePosition = ensureSafeIntakeMovement(desiredIntakePosition);
+        float deltaPosition = safeIntakePosition-intakePot.getValue();
+        float intakeSpeed = (float) MathUtil.clamp(deltaPosition/4000, -0.1, 0.1);
+        System.out.println("safe" + safeIntakePosition +"delta" + deltaPosition+"spd"+intakeSpeed);
+        //intakePitch.set(intakeSpeed);
+    }
+
+    private static float ensureSafeIntakeMovement(float desiredIntakePosition) {
+        if(armPot.getValue() < INTAKE_SAFE_DEPLOY){
+            return INTAKE_HOME;
+        }else{
+            return desiredIntakePosition;
+        }
     }
 
     public static void gripperOpen(){
-        gripper.set(-0.3f);
+        gripper.set(-1f);
     }
 
     public static void gripperClose(){
-        gripper.set(0.3f);
- /*       if (gripperPot.get()){
-       
-      } else {
-      gripper.set(0.3f);
-       }
- */     
+        if (gripperSwitch.get()){
+            // System.out.println("s");
+        } 
+        gripper.set(1f);
+     
     }
 
     public static void gripperStop(){
         gripper.stopMotor();
     }
 
-    public static void gripperHold(){
-        gripper.set(0.05);
-    }
-
     public static void gripperTest(){
         gripper.set(1);
     }
 
-    public static void armPot(){
-        System.out.println(armPot.getValue());
+    public static void setPosition(float armSetpoint,float intakeSetpoint){
+        setArmWithLimits(armSetpoint);
+        setIntakeWithLimits(intakeSetpoint);
     }
 
-    public static void intakePot(){
-        System.out.println(intakePot.getValue());
+    private static void setArmWithLimits(float newSetpoint){
+        desiredArmPosition = (float)MathUtil.clamp(newSetpoint, ARM_MAX_DOWN, ARM_MAX_UP);
     }
 
-    public static void intakeUp(){
-        intakePitch.set(-0.1f);
+    private static void setIntakeWithLimits(float newSetpoint) {
+        desiredIntakePosition = (float)MathUtil.clamp(newSetpoint, INTAKE_MAX_DOWN, INTAKE_MAX_UP);
     }
 
-    public static void intakeDown(){
-        intakePitch.set(0.1f);
+    //test space
+    private static void driveIntakePitchStick(){
+        float intakePitchSpeed = (float) (IO.controlJoystick.getRawAxis(IO.LY_STICK_AXIS));
+        if(intakePitchSpeed < 0.05f && intakePitchSpeed > -0.05f){
+            //intakePitch.stopMotor();
+        } else {
+        intakePitch.set(intakePitchSpeed * 0.25);
+        //desiredIntakePosition += 25*intakePitchSpeed;
+        }
+        //setIntakeWithLimits(intakePitchSpeed);
     }
 
-    public static void intakeStop(){
-        intakePitch.stopMotor();
-    }
-
-    public static void armUp(){
-        desiredArmPosition = 1700;
-    }
-
-    public static void armMid(){
-        desiredArmPosition = 1200;
-    }
-
-    public static void armGround(){
-        desiredArmPosition = 500;
-    }
-
-    public static void armDown(){
-        desiredArmPosition = 100;
+    private static void driveArmPitchStick(){
+        float armPitchChange = (float) (IO.controlJoystick.getRawAxis(IO.RY_STICK_AXIS));
+        if(armPitchChange < 0.05f && armPitchChange > -0.05f){
+        } else {
+        desiredArmPosition += -25*armPitchChange;
+        setArmWithLimits(desiredArmPosition);
+        }
     }
 
     public static void armStop(){
         armPitch.stopMotor();
-    }
-
-    //test space
-    public static void driveIntakePitchStick(){
-        float intakePitchSpeed = (float) (IO.controlJoystick.getRawAxis(IO.LY_STICK_AXIS));
-        if(intakePitchSpeed < 0.05f && intakePitchSpeed > -0.05f){
-            intakePitch.stopMotor();
-        } else {
-        intakePitch.set(intakePitchSpeed * 0.25);
-        }
-    }
-
-    public static void driveArmPitchStick(){
-        float armPitchChange = (float) (IO.controlJoystick.getRawAxis(IO.RY_STICK_AXIS));
-        if(armPitchChange < 0.05f && armPitchChange > -0.05f){
-            
-        } else {
-        desiredArmPosition += -25*armPitchChange;
-        }
     }
 }

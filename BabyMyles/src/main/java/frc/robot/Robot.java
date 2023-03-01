@@ -91,16 +91,15 @@ public class Robot extends TimedRobot {
   */
   @Override
   public void teleopPeriodic() {
-    Drivetrain.tankDriveWithJoystick();
-    IO.driveButtonsPressed();
-    IO.controlButtonsPressed();
-    // manipulator.armPot();
-    manipulator.intakePot();
-    manipulator.driveArmToPosition();
-    //manipulator.driveIntakeToPosition();
-    //manipulator.gripperHold();
-    manipulator.driveIntakePitchStick();
-    manipulator.driveArmPitchStick();
+    
+    //DRIVE
+    //Drivetrain.tankDriveWithJoystick(); //Drive the robot yo.
+    Drivetrain.driveArcadeWithJoystick();
+    IO.driveButtonsPressed(); //Read in IO (driver joystick) and perform actions here.
+
+    //MANIPULATOR
+    IO.controlButtonsPressed(); //Read in IO (control joystick) and perform actions here.
+    Manipulator.controlManipulator(); //Use the control functions and setpoints to drive motors.
   }
 
   /** This function is called once when the robot is disabled. */

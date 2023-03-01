@@ -71,7 +71,7 @@ public class IO {
         } 
     } 
 
-    public static void driveButtonsPressed() {              //DRIVE CONTROLLER
+    public static void driveButtonsPressed() {//DRIVE CONTROLLER
         switch (buttonPressed(IO.driveJoystick)) {
             case A_BUTTON:
                 break;
@@ -98,19 +98,19 @@ public class IO {
         }
     }
 
-    public static void controlButtonsPressed() {              //DRIVE CONTROLLER
+    public static void controlButtonsPressed() {//DRIVE CONTROLLER
         switch (buttonPressed(IO.controlJoystick)) {
             case A_BUTTON:
-                Manipulator.armDown();
+                Manipulator.setPosition(Manipulator.ARM_HOME, Manipulator.INTAKE_HOME);
                 break;
             case B_BUTTON:
-                Manipulator.armGround();
+                Manipulator.setPosition(Manipulator.ARM_GROUND, Manipulator.INTAKE_GROUND);
                 break;
             case X_BUTTON:
-                Manipulator.armMid();  
+                Manipulator.setPosition(Manipulator.ARM_MIDDLE, Manipulator.INTAKE_MIDDLE);
                 break;
             case Y_BUTTON:
-                Manipulator.armUp();
+                Manipulator.setPosition(Manipulator.ARM_HIGH, Manipulator.INTAKE_HIGH);
                 break;
             case RB_BUTTON:
                 Manipulator.gripperOpen();
@@ -125,7 +125,6 @@ public class IO {
                 break;
             default:
                 //Manipulator.intakeStop();
-                // Manipulator.armStop();
                 Manipulator.gripperStop();
             break;
         }
