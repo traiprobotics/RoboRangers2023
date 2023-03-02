@@ -22,7 +22,7 @@ public class Manipulator {
     //Range settings for the arm pitch
     private static final float ARM_MAX_UP = 2000;
     public static final float ARM_HIGH = 1700;
-    public static final float ARM_MIDDLE = 1200;
+    public static final float ARM_MIDDLE = 1500;
     public static final float ARM_GROUND = 500;
     public static final float ARM_HOME = 100;
     private static final float ARM_MAX_DOWN = 90;
@@ -63,8 +63,9 @@ public class Manipulator {
     public static void controlManipulator(){
         driveArmToPosition();
         driveArmPitchStick();
-        driveIntakeToPosition();
-        driveIntakePitchStick();
+    //    driveIntakeToPosition();
+    //    driveIntakePitchStick();
+        driveIntake();
     }
 
     private static void driveArmToPosition(){
@@ -82,7 +83,7 @@ public class Manipulator {
         float safeIntakePosition = ensureSafeIntakeMovement(desiredIntakePosition);
         float deltaPosition = safeIntakePosition-intakePot.getValue();
         float intakeSpeed = (float) MathUtil.clamp(deltaPosition/4000, -0.1, 0.1);
-        System.out.println("safe" + safeIntakePosition +"delta" + deltaPosition+"spd"+intakeSpeed);
+        //System.out.println("safe" + safeIntakePosition +"delta" + deltaPosition+"spd"+intakeSpeed);
         //intakePitch.set(intakeSpeed);
     }
 
@@ -127,13 +128,37 @@ public class Manipulator {
         desiredIntakePosition = (float)MathUtil.clamp(newSetpoint, INTAKE_MAX_DOWN, INTAKE_MAX_UP);
     }
 
+    private static void driveIntake(){
+        if(armPot.getValue() < INTAKE_SAFE_DEPLOY){
+            if(intakePot.getValue() > INTAKE_HOME){
+                driveIntakePitchStick();
+            }else{
+                intakePitch.set(-0.5);
+            }
+        } else if(intakePot.getValue() > INTAKE_MAX_UP){
+            intakePitch.set(0.26);
+
+        } else if(intakePot.getValue() < INTAKE_MAX_DOWN){
+              intakePitch.set(-0.26);
+        } else if(armPot.getValue() > ARM_MAX_UP -300){
+            if(intakePot.getValue() > 2200){
+                intakePitch.set(0.5); 
+            }else{
+                driveIntakePitchStick();
+            }
+        } else{
+            driveIntakePitchStick();
+        }
+    }
+
     //test space
     private static void driveIntakePitchStick(){
         float intakePitchSpeed = (float) (IO.controlJoystick.getRawAxis(IO.LY_STICK_AXIS));
         if(intakePitchSpeed < 0.05f && intakePitchSpeed > -0.05f){
-            //intakePitch.stopMotor();
+            intakePitch.stopMotor();
         } else {
         intakePitch.set(intakePitchSpeed * 0.25);
+        //System.out.print(armPitch);
         //desiredIntakePosition += 25*intakePitchSpeed;
         }
         //setIntakeWithLimits(intakePitchSpeed);

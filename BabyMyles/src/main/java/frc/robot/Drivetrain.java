@@ -20,7 +20,7 @@ public class Drivetrain {
       private static final float SLOW_SPEED = 0.3f;
       private static final float SPRINT_SPEED = 0.9f;
 
-      private static final double RAMP_RATE = 0.3;
+      private static final double RAMP_RATE = 1;
 
       private static boolean toggleSlowSpeed = true;
 
