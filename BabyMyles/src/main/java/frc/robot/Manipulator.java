@@ -53,6 +53,9 @@ public class Manipulator {
         armPitch.setInverted(false);
         intakePitch.setInverted(false);
         gripper.setInverted(false);
+
+        //Set smart amp limit LOWER
+        gripper.setSmartCurrentLimit(6);
         
         //working variables
         desiredArmPosition = 100;
