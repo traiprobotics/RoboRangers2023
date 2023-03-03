@@ -121,7 +121,7 @@ public class IO {
             case START_BUTTON:
                 break;
             case BACK_BUTTON:
-                Manipulator.gripperTest();
+            Manipulator.setPosition(Manipulator.ARM_COLLECT, Manipulator.INTAKE_MIDDLE);
                 break;
             default:
                 //Manipulator.intakeStop();
