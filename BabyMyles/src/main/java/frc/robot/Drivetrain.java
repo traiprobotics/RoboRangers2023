@@ -19,7 +19,7 @@ public class Drivetrain {
       private static final float DEFAULT_SPEED = 0.6f;
       private static final float SLOW_SPEED = 0.3f;
       private static final float SLOW_SPEED_MULTIPLIER = 1.6f;
-      private static final float SPRINT_SPEED = 0.9f;
+      private static final float SPRINT_SPEED = 1.0f;
 
       private static final double RAMP_RATE = 1;
 

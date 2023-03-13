@@ -26,6 +26,7 @@ public class Manipulator {
     public static final float ARM_GROUND = 500;
     public static final float ARM_HOME = 100;
     private static final float ARM_MAX_DOWN = 90;
+    public static final float ARM_COLLECT = 1450;
 
     //Range settings for the manipulator pitch
     private static final float INTAKE_MAX_UP = 4000;
@@ -55,8 +56,7 @@ public class Manipulator {
         gripper.setInverted(false);
 
         //Set smart amp limit LOWER
-        gripper.setSmartCurrentLimit(6);
-        
+         
         //working variables
         desiredArmPosition = 100;
         desiredIntakePosition = 2000;
