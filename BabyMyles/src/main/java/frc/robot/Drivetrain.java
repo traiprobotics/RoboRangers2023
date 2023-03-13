@@ -106,6 +106,34 @@ public static void driveArcade(float pSpeed, float pRotation) {
       driveArcade(turn, forward);
     }
 
+    public static void incrementForward() {
+        frontLeftDrive.set(0.3);
+        frontRightDrive.set(-0.3);
+        backLeftDrive.set(0.3);
+        backRightDrive.set(-0.3);
+    }
+
+    public static void incrementLeft() {
+      frontLeftDrive.set(-0.3);
+      frontRightDrive.set(-0.3);
+      backLeftDrive.set(-0.3);
+      backRightDrive.set(-0.3);
+    } 
+
+    public static void incrementRight() {
+      frontLeftDrive.set(0.3);
+      frontRightDrive.set(0.3);
+      backLeftDrive.set(0.3);
+      backRightDrive.set(0.3);
+    }
+
+    public static void incrementBack() {
+      frontLeftDrive.set(-0.3);
+      frontRightDrive.set(0.3);
+      backLeftDrive.set(-0.3);
+      backRightDrive.set(0.3);
+    }
+
 
 
 

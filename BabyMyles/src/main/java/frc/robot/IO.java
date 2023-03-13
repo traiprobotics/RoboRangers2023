@@ -74,12 +74,16 @@ public class IO {
     public static void driveButtonsPressed() {//DRIVE CONTROLLER
         switch (buttonPressed(IO.driveJoystick)) {
             case A_BUTTON:
+                Drivetrain.incrementBack();
                 break;
             case B_BUTTON:
+                Drivetrain.incrementRight();
                 break;
             case X_BUTTON:
+                Drivetrain.incrementLeft();
                 break;
             case Y_BUTTON:
+                Drivetrain.incrementForward();
                 break;
             case RB_BUTTON:
                 break;
@@ -91,12 +95,14 @@ public class IO {
                 break;
             case START_BUTTON:
                 break;
+         //   case L_TRIGGER
             default:
                 Drivetrain.sprintMode(false);
                 // Manipulator.armStop();
             break;
         }
     }
+
 
     public static void controlButtonsPressed() {//DRIVE CONTROLLER
         switch (buttonPressed(IO.controlJoystick)) {
