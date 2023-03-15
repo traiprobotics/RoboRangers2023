@@ -19,7 +19,8 @@ public class Drivetrain {
       private static final float DEFAULT_SPEED = 0.6f;
       private static final float SLOW_SPEED = 0.3f;
       private static final float SLOW_SPEED_MULTIPLIER = 1.6f;
-      private static final float SPRINT_SPEED = 1.0f;
+      private static final float HIGH_SPEED_MULTIPLIER = 0.7f;
+      private static final float SPRINT_SPEED = 0.8f;
 
       private static final double RAMP_RATE = 1;
 
@@ -102,7 +103,12 @@ public static void driveArcade(float pSpeed, float pRotation) {
       } else {
       forward = (float) (IO.driveJoystick.getRawAxis(IO.LY_STICK_AXIS)* speed);
       }
-      float turn = (float) (IO.driveJoystick.getRawAxis(IO.RX_STICK_AXIS)* speed);
+      float turn;
+      if(speed == DEFAULT_SPEED){
+        turn = (float) (IO.driveJoystick.getRawAxis(IO.RX_STICK_AXIS)* speed * HIGH_SPEED_MULTIPLIER);
+      } else {
+        turn = (float) (IO.driveJoystick.getRawAxis(IO.RX_STICK_AXIS)* speed);
+      }
       driveArcade(turn, forward);
     }
 
@@ -133,7 +139,12 @@ public static void driveArcade(float pSpeed, float pRotation) {
       backLeftDrive.set(-0.3);
       backRightDrive.set(0.3);
     }
-
+    public static void stop() {
+      frontLeftDrive.stopMotor();
+      frontRightDrive.stopMotor();
+      backLeftDrive.stopMotor();
+      backRightDrive.stopMotor();
+    }
 
 
 

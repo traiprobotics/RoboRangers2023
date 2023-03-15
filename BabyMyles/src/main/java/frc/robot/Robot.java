@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
+  private static float countAtPosition = 0;
+  private static float counter = 0;
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -65,6 +67,9 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+    Manipulator.setPosition(Manipulator.ARM_MIDDLE, Manipulator.INTAKE_HIGH);
+    countAtPosition = 0;
+    counter = 0;
   }
 
   /** This function is called periodically during autonomous. */
@@ -72,13 +77,31 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     switch (m_autoSelected) {
       case kCustomAuto:
-        // Put custom auto code here
+        Manipulator.driveArmToPosition();
+        Manipulator.driveIntakeToPosition();
+        if (Manipulator.atPosition() && countAtPosition == 0){
+          countAtPosition = counter;
+          Drivetrain.incrementForward();
+           System.out.println("going forward!");
+        }
+        if (countAtPosition + 80 < counter && countAtPosition != 0){
+          System.out.println("Stopping!");
+          Drivetrain.stop();
+          Manipulator.gripperOpen();
+          if (countAtPosition + 90 < counter){
+            Manipulator.gripperStop();
+          }
+        }
+        
+
         break;
       case kDefaultAuto:
       default:
         // Put default auto code here
         break;
     }
+    counter ++;
+   // System.out.println(counter);
   }
 
   /** This function is called once when teleop is enabled. */

@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
@@ -15,9 +16,12 @@ public class Manipulator {
     private static AnalogInput armPot;
     private static AnalogInput intakePot;
     private static DigitalInput gripperSwitch;
-    private static float desiredArmPosition = 100;
+    private static float desiredArmPosition = 200;
     private static float desiredIntakePosition = 3000;
     private static float currentArmPosition = 100;
+
+    private static boolean armWithinDeadband = false;
+    private static float deadband = 100.0f;
 
     //Range settings for the arm pitch
     private static final float ARM_MAX_UP = 2000;
@@ -56,11 +60,14 @@ public class Manipulator {
         gripper.setInverted(false);
 
         //Set smart amp limit LOWER
+        gripper.setSmartCurrentLimit(10);
          
         //working variables
         desiredArmPosition = 100;
         desiredIntakePosition = 2000;
         currentArmPosition = armPot.getValue();
+
+        armWithinDeadband = false;
     }
 
     public static void controlManipulator(){
@@ -71,7 +78,7 @@ public class Manipulator {
         driveIntake();
     }
 
-    private static void driveArmToPosition(){
+    public static void driveArmToPosition(){
         float currentArmPosition = armPot.getValue();
         float deltaPosition = desiredArmPosition-currentArmPosition;
         float armSpeed = (float) MathUtil.clamp(deltaPosition/2000, -0.3, 0.3);
@@ -80,14 +87,24 @@ public class Manipulator {
         if(currentArmPosition >= ARM_GROUND){
             Drivetrain.setSlowSpeed();
         }
+
+        if (Math.abs(deltaPosition) < Manipulator.deadband){
+            armWithinDeadband = true;
+        }else{
+            armWithinDeadband = false;
+        }
     }
 
-    private static void driveIntakeToPosition(){
+    public static void driveIntakeToPosition(){
         float safeIntakePosition = ensureSafeIntakeMovement(desiredIntakePosition);
         float deltaPosition = safeIntakePosition-intakePot.getValue();
         float intakeSpeed = (float) MathUtil.clamp(deltaPosition/4000, -0.1, 0.1);
         //System.out.println("safe" + safeIntakePosition +"delta" + deltaPosition+"spd"+intakeSpeed);
-        //intakePitch.set(intakeSpeed);
+        intakePitch.set(-intakeSpeed);
+    }
+
+    public static boolean atPosition(){
+        return armWithinDeadband;
     }
 
     private static float ensureSafeIntakeMovement(float desiredIntakePosition) {
