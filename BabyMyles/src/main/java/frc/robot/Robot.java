@@ -15,11 +15,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
+  private static final String kCubeBackUp = "Cube and Back Up";
+  private static final String kCube = "Cube Only";
   private static float countAtPosition = 0;
   private static float counter = 0;
   private String m_autoSelected;
+  int stage;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   /*These are the classes for operations of the robot we want.
@@ -37,8 +38,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
+    m_chooser.setDefaultOption("Cube and Back Up", kCubeBackUp);
+    m_chooser.addOption("Cube Only", kCube);
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 
@@ -70,37 +71,119 @@ public class Robot extends TimedRobot {
     Manipulator.setPosition(Manipulator.ARM_MIDDLE, Manipulator.INTAKE_HIGH);
     countAtPosition = 0;
     counter = 0;
+    stage = 1;
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
     switch (m_autoSelected) {
-      case kCustomAuto:
-        Manipulator.driveArmToPosition();
-        Manipulator.driveIntakeToPosition();
-        if (Manipulator.atPosition() && countAtPosition == 0){
-          countAtPosition = counter;
-          Drivetrain.incrementForward();
-           System.out.println("going forward!");
-        }
-        if (countAtPosition + 80 < counter && countAtPosition != 0){
-          System.out.println("Stopping!");
-          Drivetrain.stop();
-          Manipulator.gripperOpen();
-          if (countAtPosition + 90 < counter){
+      case kCube:
+        switch (stage) {
+          //32 inches away from grid
+          case 1:
+          System.out.println("Switch cases");
+          if (Manipulator.atPosition()){
+            stage ++; counter = 0;}
+          break;
+          case 2:
+          Manipulator.gripperClose();
+          Drivetrain.driveArcade(0f, -0.3f);
+          if (counter > 10) {
             Manipulator.gripperStop();
           }
-        }
+          if (counter > 80) {
+            stage ++; counter = 0;}
+          break;
+          case 3:
+          Drivetrain.stop();
+          Manipulator.gripperOpen();
+          if (counter > 10) {
+            stage ++; counter = 0;
+          }
+          break; 
+          case 4:
+          manipulator.gripperStop();
+          Drivetrain.driveArcade(0f, 0.3f);
+          if (counter > 20) {
+            manipulator.gripperClose();
+          }
+          if (counter > 50) {
+            manipulator.gripperStop();
+          }
+          if (counter > 50) {
+            manipulator.setPosition(Manipulator.ARM_HOME,Manipulator.INTAKE_HOME);
+          }
+          if (counter > 80) {
+            stage ++; counter = 0;
+          }
+          break;
+          case 5:
+          Drivetrain.stop();
+          counter = 0;
+          break;
+          }
         
 
         break;
-      case kDefaultAuto:
+      case kCubeBackUp:
+      switch (stage) {
+        //32 inches away from grid
+        case 1:
+        System.out.println("Switch cases");
+        if (Manipulator.atPosition()){
+          stage ++; counter = 0;}
+        break;
+        case 2:
+        Drivetrain.driveArcade(0f, -0.3f);
+        if (counter > 80) {
+          stage ++; counter = 0;}
+        break;
+        case 3:
+        Drivetrain.stop();
+        Manipulator.gripperOpen();
+        if (counter > 10) {
+          stage ++; counter = 0;
+        }
+        break; 
+        case 4:
+        manipulator.gripperStop();
+        Drivetrain.driveArcade(0f, 0.65f);
+        if (counter > 20) {
+          manipulator.gripperClose();
+        }
+        if (counter > 50) {
+          manipulator.gripperStop();
+        }
+        if (counter > 30) {
+          manipulator.setPosition(Manipulator.ARM_HOME,Manipulator.INTAKE_HOME);
+        }
+        if (counter > 80) {
+          stage ++; counter = 0;
+        }
+        break;
+        case 5:
+        Drivetrain.stop();
+        Drivetrain.driveArcade(0.65f, 0f);
+        if (counter > 47) {
+          Drivetrain.stop();
+          Manipulator.setPosition(Manipulator.ARM_GROUND, manipulator.INTAKE_HOME);
+          stage ++; counter = 0;
+        }
+        break;
+        case 6:
+        counter = 0;
+        break;
+        }
+
+
       default:
         // Put default auto code here
         break;
     }
     counter ++;
+    Manipulator.driveArmToPosition();
+    Manipulator.driveIntakeToPosition();
    // System.out.println(counter);
   }
 

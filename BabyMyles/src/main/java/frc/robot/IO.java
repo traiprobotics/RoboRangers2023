@@ -118,10 +118,10 @@ public class IO {
             case Y_BUTTON:
                 Manipulator.setPosition(Manipulator.ARM_HIGH, Manipulator.INTAKE_HIGH);
                 break;
-            case RB_BUTTON:
+            case LB_BUTTON:
                 Manipulator.gripperOpen();
                 break;
-            case LB_BUTTON:
+            case RB_BUTTON:
                 Manipulator.gripperClose();
                 break;
             case START_BUTTON:

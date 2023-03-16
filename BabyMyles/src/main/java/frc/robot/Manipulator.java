@@ -21,7 +21,7 @@ public class Manipulator {
     private static float currentArmPosition = 100;
 
     private static boolean armWithinDeadband = false;
-    private static float deadband = 100.0f;
+    private static float deadband = 300.0f;
 
     //Range settings for the arm pitch
     private static final float ARM_MAX_UP = 2000;
@@ -116,14 +116,14 @@ public class Manipulator {
     }
 
     public static void gripperOpen(){
-        gripper.set(-1f);
+        gripper.set(1f);
     }
 
     public static void gripperClose(){
         if (gripperSwitch.get()){
             // System.out.println("s");
         } 
-        gripper.set(1f);
+        gripper.set(-1f);
      
     }
 
