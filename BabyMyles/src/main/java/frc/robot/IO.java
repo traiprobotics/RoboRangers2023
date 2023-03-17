@@ -86,6 +86,8 @@ public class IO {
                 Drivetrain.incrementForward();
                 break;
             case RB_BUTTON:
+            //Manipulator.setPosition(Manipulator.ARM_GROUND, Manipulator.INTAKE_AUTO_GROUND);
+            //System.out.println("fuck this");
                 break;
             case LB_BUTTON:
                 Drivetrain.sprintMode(true);
@@ -127,7 +129,6 @@ public class IO {
             case START_BUTTON:
                 break;
             case BACK_BUTTON:
-            Manipulator.setPosition(Manipulator.ARM_COLLECT, Manipulator.INTAKE_MIDDLE);
                 break;
             default:
                 //Manipulator.intakeStop();

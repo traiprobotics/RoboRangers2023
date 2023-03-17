@@ -167,11 +167,19 @@ public class Robot extends TimedRobot {
         Drivetrain.driveArcade(0.65f, 0f);
         if (counter > 47) {
           Drivetrain.stop();
-          Manipulator.setPosition(Manipulator.ARM_GROUND, manipulator.INTAKE_HOME);
+          Manipulator.setPosition(Manipulator.ARM_GROUND, manipulator.INTAKE_AUTO_GROUND);
           stage ++; counter = 0;
         }
         break;
         case 6:
+        Manipulator.gripperOpen();
+        if (counter > 30) {
+          Manipulator.gripperClose();
+          stage ++; counter = 0;
+        }
+
+        break;
+        case 7:
         counter = 0;
         break;
         }

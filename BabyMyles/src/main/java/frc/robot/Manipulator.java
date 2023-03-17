@@ -38,6 +38,7 @@ public class Manipulator {
     public static final float INTAKE_MIDDLE = 620;
     public static final float INTAKE_GROUND = 1200;
     public static final float INTAKE_HOME = 3500;
+    public static final float INTAKE_AUTO_GROUND = 3000;
     private static final float INTAKE_MAX_DOWN = 250;
     private static final float INTAKE_SAFE_DEPLOY = 400;
     private static final float mapRate = 0;
