@@ -20,8 +20,13 @@ public class Robot extends TimedRobot {
   private static float countAtPosition = 0;
   private static float counter = 0;
   private String m_autoSelected;
+  private String controlSelected;
   int stage;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
+  private final SendableChooser<String> control_chooser = new SendableChooser<>();
+  private static final String drive_controller = "xbox";
+  private static final String drive_joystick = "joystick";
 
   /*These are the classes for operations of the robot we want.
    * IO - Inputs from the controllers
@@ -41,6 +46,10 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Cube and Back Up", kCubeBackUp);
     m_chooser.addOption("Cube Only", kCube);
     SmartDashboard.putData("Auto choices", m_chooser);
+
+    control_chooser.setDefaultOption("xbox", drive_controller);
+    control_chooser.addOption("joystick", drive_joystick);
+    SmartDashboard.putData("controller", control_chooser);
   }
 
   /**
@@ -173,13 +182,31 @@ public class Robot extends TimedRobot {
         break;
         case 6:
         Manipulator.gripperOpen();
-        if (counter > 30) {
+        Drivetrain.driveArcade(0f, -0.25f);
+        if (counter > 50) {
+          Manipulator.gripperStop();
+        }
+        if (counter > 100) {
           Manipulator.gripperClose();
+          Drivetrain.stop();
           stage ++; counter = 0;
         }
-
         break;
         case 7:
+        if (counter > 50) {
+          Manipulator.gripperStop();
+          manipulator.setPosition(Manipulator.ARM_HOME,Manipulator.INTAKE_HOME);
+          stage ++; counter = 0;
+        }
+        break;
+        case 8:
+        Drivetrain.driveArcade(0f, 0.65f);
+        if (counter > 60) {
+          Drivetrain.stop();
+          stage ++; counter = 0;
+        }
+        break;
+        case 9:
         counter = 0;
         break;
         }
@@ -197,7 +224,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    controlSelected = control_chooser.getSelected();
+  }
 
   /** This function is called periodically during operator control. 
    * 
@@ -208,8 +237,16 @@ public class Robot extends TimedRobot {
     
     //DRIVE
     //Drivetrain.tankDriveWithJoystick(); //Drive the robot yo.
+    switch (controlSelected) { 
+    case drive_controller:
+    Drivetrain.driveArcadeWithController();
+    break;
+    case drive_joystick:
     Drivetrain.driveArcadeWithJoystick();
+    break;
+    }
     IO.driveButtonsPressed(); //Read in IO (driver joystick) and perform actions here.
+
 
     //MANIPULATOR
     IO.controlButtonsPressed(); //Read in IO (control joystick) and perform actions here.

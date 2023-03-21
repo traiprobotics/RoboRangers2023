@@ -22,6 +22,7 @@ public class Manipulator {
 
     private static boolean armWithinDeadband = false;
     private static float deadband = 300.0f;
+    private static boolean automaticIntake = false;
 
     //Range settings for the arm pitch
     private static final float ARM_MAX_UP = 2000;
@@ -35,10 +36,10 @@ public class Manipulator {
     //Range settings for the manipulator pitch
     private static final float INTAKE_MAX_UP = 4000;
     public static final float INTAKE_HIGH = 2100;
-    public static final float INTAKE_MIDDLE = 620;
-    public static final float INTAKE_GROUND = 1200;
+    public static final float INTAKE_MIDDLE = 2100;
+    public static final float INTAKE_GROUND = 2600;
     public static final float INTAKE_HOME = 3500;
-    public static final float INTAKE_AUTO_GROUND = 3000;
+    public static final float INTAKE_AUTO_GROUND = 2700;
     private static final float INTAKE_MAX_DOWN = 250;
     private static final float INTAKE_SAFE_DEPLOY = 400;
     private static final float mapRate = 0;
@@ -61,7 +62,8 @@ public class Manipulator {
         gripper.setInverted(false);
 
         //Set smart amp limit LOWER
-        gripper.setSmartCurrentLimit(10);
+        gripper.setSmartCurrentLimit(8);
+        //was 10 on 3/21/23
          
         //working variables
         desiredArmPosition = 100;
@@ -76,8 +78,18 @@ public class Manipulator {
         driveArmPitchStick();
     //    driveIntakeToPosition();
     //    driveIntakePitchStick();
-        driveIntake();
+        if (automaticIntake == false) {
+            driveIntake();
+        } else {
+            driveIntakeToPosition();
+        }
+
     }
+
+        public static void automaticIntake(Boolean auto){
+        automaticIntake = auto;
+    }
+
 
     public static void driveArmToPosition(){
         float currentArmPosition = armPot.getValue();
@@ -99,7 +111,7 @@ public class Manipulator {
     public static void driveIntakeToPosition(){
         float safeIntakePosition = ensureSafeIntakeMovement(desiredIntakePosition);
         float deltaPosition = safeIntakePosition-intakePot.getValue();
-        float intakeSpeed = (float) MathUtil.clamp(deltaPosition/4000, -0.1, 0.1);
+        float intakeSpeed = (float) MathUtil.clamp(deltaPosition/4000, -0.2, 0.2);
         //System.out.println("safe" + safeIntakePosition +"delta" + deltaPosition+"spd"+intakeSpeed);
         intakePitch.set(-intakeSpeed);
     }

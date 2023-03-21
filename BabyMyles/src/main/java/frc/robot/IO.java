@@ -117,15 +117,19 @@ public class IO {
         switch (buttonPressed(IO.controlJoystick)) {
             case A_BUTTON:
                 Manipulator.setPosition(Manipulator.ARM_HOME, Manipulator.INTAKE_HOME);
+                Manipulator.automaticIntake(true);
                 break;
             case B_BUTTON:
                 Manipulator.setPosition(Manipulator.ARM_GROUND, Manipulator.INTAKE_GROUND);
+                Manipulator.automaticIntake(true);
                 break;
             case X_BUTTON:
                 Manipulator.setPosition(Manipulator.ARM_MIDDLE, Manipulator.INTAKE_MIDDLE);
+                Manipulator.automaticIntake(true);
                 break;
             case Y_BUTTON:
                 Manipulator.setPosition(Manipulator.ARM_HIGH, Manipulator.INTAKE_HIGH);
+                Manipulator.automaticIntake(true);
                 break;
             case LB_BUTTON:
                 Manipulator.gripperOpen();
@@ -140,6 +144,7 @@ public class IO {
             default:
                 //Manipulator.intakeStop();
                 Manipulator.gripperStop();
+                Manipulator.automaticIntake(false);
             break;
         }
     }
