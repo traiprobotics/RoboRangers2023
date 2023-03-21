@@ -12,6 +12,11 @@ public class IO {
     public static final int RX_STICK_AXIS = 2;
     public static final int RY_STICK_AXIS = 3;
 
+    public static final int X_STICK_AXIS = 0;
+    public static final int Y_STICK_AXIS = 1;
+    public static final int Z_ROTATE = 2;
+    public static final int SLIDER = 3;
+
     public static final int L_TRIGGER_AXIS = 2;
     public static final int R_TRIGGER_AXIS = 3;
 
@@ -29,6 +34,8 @@ public class IO {
     public static final int R_STICK_BUTTON = 10;
     public static final int L_TRIGGER_BUTTON = 11;
     public static final int R_TRIGGER_BUTTON = 12;
+
+    public static final int STICK_TRIGGER = 1;
 
     public static Joystick driveJoystick;
     public static Joystick controlJoystick;
@@ -76,27 +83,27 @@ public class IO {
             case A_BUTTON:
                 Drivetrain.incrementBack();
                 break;
-            case B_BUTTON:
-                Drivetrain.incrementRight();
-                break;
-            case X_BUTTON:
-                Drivetrain.incrementLeft();
-                break;
-            case Y_BUTTON:
-                Drivetrain.incrementForward();
-                break;
-            case RB_BUTTON:
+            // case B_BUTTON:
+            //     Drivetrain.incrementRight();
+            //     break;
+            // case X_BUTTON:
+            //     Drivetrain.incrementLeft();
+            //     break;
+            // case Y_BUTTON:
+            //     Drivetrain.incrementForward();
+            //     break;
+            // case RB_BUTTON:
             //Manipulator.setPosition(Manipulator.ARM_GROUND, Manipulator.INTAKE_AUTO_GROUND);
             //System.out.println("fuck this");
-                break;
-            case LB_BUTTON:
+                // break;
+            case STICK_TRIGGER:
                 Drivetrain.sprintMode(true);
                 break;
-            case BACK_BUTTON:
-                // changeLayoutBackwards();
-                break;
-            case START_BUTTON:
-                break;
+            // case BACK_BUTTON:
+            //     // changeLayoutBackwards();
+            //     break;
+            // case START_BUTTON:
+            //     break;
          //   case L_TRIGGER
             default:
                 Drivetrain.sprintMode(false);

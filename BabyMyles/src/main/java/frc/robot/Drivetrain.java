@@ -4,6 +4,8 @@ package frc.robot;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class Drivetrain {
@@ -96,18 +98,20 @@ public static void driveArcade(float pSpeed, float pRotation) {
       speed = SLOW_SPEED;
     }
 
+
     public static void driveArcadeWithJoystick() {
       float forward;
+      float slider = (float) MathUtil.clamp(-IO.driveJoystick.getRawAxis(IO.SLIDER), 0.3, 1);
       if(speed == SLOW_SPEED){
-        forward = (float) (IO.driveJoystick.getRawAxis(IO.LY_STICK_AXIS)* speed * SLOW_SPEED_MULTIPLIER);
+        forward = (float) (IO.driveJoystick.getRawAxis(IO.Y_STICK_AXIS)* speed * SLOW_SPEED_MULTIPLIER * (slider));;
       } else {
-      forward = (float) (IO.driveJoystick.getRawAxis(IO.LY_STICK_AXIS)* speed);
+      forward = (float) (IO.driveJoystick.getRawAxis(IO.Y_STICK_AXIS)* speed *(slider));
       }
       float turn;
       if(speed == DEFAULT_SPEED){
-        turn = (float) (IO.driveJoystick.getRawAxis(IO.RX_STICK_AXIS)* speed * HIGH_SPEED_MULTIPLIER);
+        turn = (float) (IO.driveJoystick.getRawAxis(IO.X_STICK_AXIS)* speed * HIGH_SPEED_MULTIPLIER *(slider));
       } else {
-        turn = (float) (IO.driveJoystick.getRawAxis(IO.RX_STICK_AXIS)* speed);
+        turn = (float) (IO.driveJoystick.getRawAxis(IO.X_STICK_AXIS)* speed);
       }
       driveArcade(turn, forward);
     }

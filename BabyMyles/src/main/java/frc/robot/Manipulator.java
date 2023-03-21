@@ -28,7 +28,7 @@ public class Manipulator {
     public static final float ARM_HIGH = 1700;
     public static final float ARM_MIDDLE = 1500;
     public static final float ARM_GROUND = 500;
-    public static final float ARM_HOME = 100;
+    public static final float ARM_HOME = 300;
     private static final float ARM_MAX_DOWN = 90;
     public static final float ARM_COLLECT = 1450;
 
