@@ -200,7 +200,7 @@ public class Robot extends TimedRobot {
         }
         break;
         case 8:
-        Drivetrain.driveArcade(0f, 0.65f);
+        Drivetrain.driveArcade(0f, 0f);
         if (counter > 60) {
           Drivetrain.stop();
           stage ++; counter = 0;
@@ -245,8 +245,8 @@ public class Robot extends TimedRobot {
     Drivetrain.driveArcadeWithJoystick();
     break;
     }
-    IO.driveButtonsPressed(); //Read in IO (driver joystick) and perform actions here.
-
+    IO.driveButtonsPressedJoystick(); //Read in IO (driver joystick) and perform actions here.
+    IO.driveButtonsPressedXbox();
 
     //MANIPULATOR
     IO.controlButtonsPressed(); //Read in IO (control joystick) and perform actions here.

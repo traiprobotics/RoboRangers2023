@@ -101,7 +101,7 @@ public static void driveArcade(float pSpeed, float pRotation) {
 
     public static void driveArcadeWithJoystick() {
       float forward;
-      float slider = (float) MathUtil.clamp(-IO.driveJoystick.getRawAxis(IO.SLIDER), 0.3, 1);
+      float slider = (float) MathUtil.clamp(-IO.driveJoystick.getRawAxis(IO.SLIDER), 0.5, 1);
       if(speed == SLOW_SPEED){
         forward = (float) (IO.driveJoystick.getRawAxis(IO.Y_STICK_AXIS)* speed * SLOW_SPEED_MULTIPLIER * (slider));;
       } else {

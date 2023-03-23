@@ -22,12 +22,20 @@ public class Manipulator {
 
     private static boolean armWithinDeadband = false;
     private static float deadband = 300.0f;
-    private static boolean automaticIntake = false;
+    public static boolean automaticIntake = false;
 
     //Range settings for the arm pitch
+    // private static final float ARM_MAX_UP = 2050;
+    // public static final float ARM_HIGH = 1720;
+    // public static final float ARM_MIDDLE = 1500;
+    // public static final float ARM_GROUND = 550;
+    // public static final float ARM_HOME = 300;
+    // private static final float ARM_MAX_DOWN = 90;
+    // public static final float ARM_COLLECT = 1500;
+    //added 50 to everything because broken!!!!!
     private static final float ARM_MAX_UP = 2000;
-    public static final float ARM_HIGH = 1700;
-    public static final float ARM_MIDDLE = 1500;
+    public static final float ARM_HIGH = 1670;
+    public static final float ARM_MIDDLE = 1430;
     public static final float ARM_GROUND = 500;
     public static final float ARM_HOME = 300;
     private static final float ARM_MAX_DOWN = 90;
@@ -36,7 +44,7 @@ public class Manipulator {
     //Range settings for the manipulator pitch
     private static final float INTAKE_MAX_UP = 4000;
     public static final float INTAKE_HIGH = 2100;
-    public static final float INTAKE_MIDDLE = 2100;
+    public static final float INTAKE_MIDDLE = 2150;
     public static final float INTAKE_GROUND = 2600;
     public static final float INTAKE_HOME = 3500;
     public static final float INTAKE_AUTO_GROUND = 2700;
@@ -62,7 +70,7 @@ public class Manipulator {
         gripper.setInverted(false);
 
         //Set smart amp limit LOWER
-        gripper.setSmartCurrentLimit(8);
+        gripper.setSmartCurrentLimit(10);
         //was 10 on 3/21/23
          
         //working variables
