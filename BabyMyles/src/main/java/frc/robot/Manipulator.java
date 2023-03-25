@@ -34,22 +34,22 @@ public class Manipulator {
     // public static final float ARM_COLLECT = 1500;
     //added 50 to everything because broken!!!!!
     private static final float ARM_MAX_UP = 2000;
-    public static final float ARM_HIGH = 1670;
-    public static final float ARM_MIDDLE = 1430;
-    public static final float ARM_GROUND = 500;
-    public static final float ARM_HOME = 100;
-    private static final float ARM_MAX_DOWN = 90;
+    public static final float ARM_HIGH = 1870;
+    public static final float ARM_MIDDLE = 1630;
+    public static final float ARM_GROUND = 700;
+    public static final float ARM_HOME = 200;
+    private static final float ARM_MAX_DOWN = 200;
     public static final float ARM_COLLECT = 1450;
 
     //Range settings for the manipulator pitch
     private static final float INTAKE_MAX_UP = 4000;
     public static final float INTAKE_HIGH = 2100;
-    public static final float INTAKE_MIDDLE = 2150;
+    public static final float INTAKE_MIDDLE = 2100;
     public static final float INTAKE_GROUND = 2600;
-    public static final float INTAKE_HOME = 3500;
+    public static final float INTAKE_HOME = 3700;
     public static final float INTAKE_AUTO_GROUND = 2700;
     private static final float INTAKE_MAX_DOWN = 250;
-    private static final float INTAKE_SAFE_DEPLOY = 400;
+    private static final float INTAKE_SAFE_DEPLOY = 550;
     private static final float mapRate = 0;
 
     public Manipulator(){
@@ -74,7 +74,7 @@ public class Manipulator {
         //was 10 on 3/21/23
          
         //working variables
-        desiredArmPosition = 100;
+        desiredArmPosition = ARM_HOME;
         desiredIntakePosition = 2000;
         currentArmPosition = armPot.getValue();
 
@@ -119,7 +119,7 @@ public class Manipulator {
     public static void driveIntakeToPosition(){
         float safeIntakePosition = ensureSafeIntakeMovement(desiredIntakePosition);
         float deltaPosition = safeIntakePosition-intakePot.getValue();
-        float intakeSpeed = (float) MathUtil.clamp(deltaPosition/4000, -0.2, 0.2);
+        float intakeSpeed = (float) MathUtil.clamp(deltaPosition/2000, -0.25, 0.25);
         //System.out.println("safe" + safeIntakePosition +"delta" + deltaPosition+"spd"+intakeSpeed);
         intakePitch.set(-intakeSpeed);
     }
@@ -174,7 +174,8 @@ public class Manipulator {
             if(intakePot.getValue() > INTAKE_HOME){
                 driveIntakePitchStick();
             }else{
-                intakePitch.set(-0.5);
+                intakePitch.set(-0.6);
+                //was 0.5
             }
         } else if(intakePot.getValue() > INTAKE_MAX_UP){
             intakePitch.set(0.26);
