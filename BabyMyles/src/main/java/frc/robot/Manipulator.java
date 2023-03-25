@@ -16,7 +16,7 @@ public class Manipulator {
     private static AnalogInput armPot;
     private static AnalogInput intakePot;
     private static DigitalInput gripperSwitch;
-    private static float desiredArmPosition = 200;
+    private static float desiredArmPosition = 180;
     private static float desiredIntakePosition = 3000;
     private static float currentArmPosition = 100;
 
@@ -37,8 +37,8 @@ public class Manipulator {
     public static final float ARM_HIGH = 1870;
     public static final float ARM_MIDDLE = 1630;
     public static final float ARM_GROUND = 700;
-    public static final float ARM_HOME = 200;
-    private static final float ARM_MAX_DOWN = 200;
+    public static final float ARM_HOME = 180;
+    private static final float ARM_MAX_DOWN = 180;
     public static final float ARM_COLLECT = 1450;
 
     //Range settings for the manipulator pitch

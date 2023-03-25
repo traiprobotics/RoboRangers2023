@@ -167,48 +167,48 @@ public class Robot extends TimedRobot {
         if (counter > 30) {
           manipulator.setPosition(Manipulator.ARM_HOME,Manipulator.INTAKE_HOME);
         }
-        if (counter > 80) {
+        if (counter > 72) {
           stage ++; counter = 0;
         }
         break;
         case 5:
         Drivetrain.stop();
         Drivetrain.driveArcade(0.65f, 0f);
-        if (counter > 35) {
+        if (counter > 45) {
           Drivetrain.stop();
           Manipulator.setPosition(Manipulator.ARM_GROUND, manipulator.INTAKE_AUTO_GROUND);
           stage ++; counter = 0;
         }
         break;
-        // case 6:
-        // Manipulator.gripperOpen();
-        // Drivetrain.driveArcade(0f, -0.25f);
-        // if (counter > 50) {
-        //   Manipulator.gripperStop();
-        // }
-        // if (counter > 100) {
-        //   Manipulator.gripperClose();
-        //   Drivetrain.stop();
-        //   stage ++; counter = 0;
-        // }
-        // break;
-        // case 7:
-        // if (counter > 50) {
-        //   Manipulator.gripperStop();
-        //   manipulator.setPosition(Manipulator.ARM_HOME,Manipulator.INTAKE_HOME);
-        //   stage ++; counter = 0;
-        // }
-        // break;
-        // case 8:
+        case 6:
+        Manipulator.gripperOpen();
+        Drivetrain.driveArcade(0f, -0.25f);
+        if (counter > 50) {
+          Manipulator.gripperStop();
+        }
+        if (counter > 150) {
+          Manipulator.gripperClose();
+          Drivetrain.stop();
+          stage ++; counter = 0;
+        }
+        break;
+        case 7:
+        if (counter > 50) {
+          Manipulator.gripperStop();
+          manipulator.setPosition(Manipulator.ARM_HOME,Manipulator.INTAKE_HOME);
+          stage ++; counter = 0;
+        }
+        break;
+        case 8:
         // Drivetrain.driveArcade(0f, 0f);
         // if (counter > 60) {
         //   Drivetrain.stop();
         //   stage ++; counter = 0;
         // }
-        // break;
-        // case 9:
-        // counter = 0;
-        // break;
+        break;
+        case 9:
+        counter = 0;
+        break;
         }
 
 
