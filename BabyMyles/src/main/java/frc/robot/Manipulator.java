@@ -16,7 +16,7 @@ public class Manipulator {
     private static AnalogInput armPot;
     private static AnalogInput intakePot;
     private static DigitalInput gripperSwitch;
-    private static float desiredArmPosition = 180;
+    private static float desiredArmPosition = 1;
     private static float desiredIntakePosition = 3000;
     private static float currentArmPosition = 100;
 
@@ -37,7 +37,7 @@ public class Manipulator {
     public static final float ARM_HIGH = 1870;
     public static final float ARM_MIDDLE = 1630;
     public static final float ARM_GROUND = 700;
-    public static final float ARM_HOME = 180;
+    public static final float ARM_HOME = 150;
     private static final float ARM_MAX_DOWN = 180;
     public static final float ARM_COLLECT = 1450;
 
@@ -46,7 +46,7 @@ public class Manipulator {
     public static final float INTAKE_HIGH = 2100;
     public static final float INTAKE_MIDDLE = 2100;
     public static final float INTAKE_GROUND = 2600;
-    public static final float INTAKE_HOME = 3700;
+    public static final float INTAKE_HOME = 4000;
     public static final float INTAKE_AUTO_GROUND = 2700;
     private static final float INTAKE_MAX_DOWN = 250;
     private static final float INTAKE_SAFE_DEPLOY = 550;
@@ -70,7 +70,7 @@ public class Manipulator {
         gripper.setInverted(false);
 
         //Set smart amp limit LOWER
-        gripper.setSmartCurrentLimit(10);
+        gripper.setSmartCurrentLimit(9);
         //was 10 on 3/21/23
          
         //working variables
