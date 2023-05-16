@@ -11,6 +11,8 @@ public class IO {
     public static final int LY_STICK_AXIS = 1;
     public static final int RX_STICK_AXIS = 2;
     public static final int RY_STICK_AXIS = 3;
+    public static final int NEW_RX_STICK_AXIS = 4;
+    public static final int NEW_RY_STICK_AXIS = 5;
 
     public static final int X_STICK_AXIS = 0;
     public static final int Y_STICK_AXIS = 1;
@@ -71,6 +73,8 @@ public class IO {
         return L_TRIGGER_BUTTON;
         } else if(pJoystick.getRawAxis(R_TRIGGER_AXIS) > 0.1f) {
         return R_TRIGGER_BUTTON;
+        
+
         } else if(pJoystick.getPOV() > -1){
             return PAD;
         } else {

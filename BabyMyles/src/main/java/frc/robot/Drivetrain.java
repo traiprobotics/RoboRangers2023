@@ -125,9 +125,9 @@ public static void driveArcade(float pSpeed, float pRotation) {
       }
       float turn;
       if(speed == DEFAULT_SPEED){
-        turn = (float) (IO.driveJoystick.getRawAxis(IO.RX_STICK_AXIS)* speed * HIGH_SPEED_MULTIPLIER);
+        turn = (float) (IO.driveJoystick.getRawAxis(IO.NEW_RX_STICK_AXIS)* speed * HIGH_SPEED_MULTIPLIER);
       } else {
-        turn = (float) (IO.driveJoystick.getRawAxis(IO.RX_STICK_AXIS)* speed);
+        turn = (float) (IO.driveJoystick.getRawAxis(IO.NEW_RX_STICK_AXIS)* speed);
       }
       driveArcade(turn, forward);
     }
